@@ -1,6 +1,8 @@
 package com.pmdm.practica3;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ public class PatientAdapter extends ArrayAdapter<Patient> {
         super(context, 0, patients);
     }
 
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -25,18 +28,24 @@ public class PatientAdapter extends ArrayAdapter<Patient> {
 
         // Reutilizar la vista si ya existe, de lo contrario, inflarla
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_patient, parent, false);
         }
 
         // Obtener la referencia al TextView en el layout
-        TextView textView = convertView.findViewById(android.R.id.text1);
+        TextView textView1 = convertView.findViewById(android.R.id.text1);
 
-        // Establecer el texto del TextView con el nombre del paciente
+        TextView textView2 = convertView.findViewById(android.R.id.text2);
+
+
+        // Muestra los datos del paciente
         if (patient != null) {
-            textView.setText(patient.toString());
+            textView1.setText(patient.getName() + " " + patient.getSurname());
+            textView2.setText(patient.getCity() + " " + patient.getProvince() + " Temperatura : " + patient.getTemperature());
         }
 
         return convertView;
+
     }
+
 }
 
