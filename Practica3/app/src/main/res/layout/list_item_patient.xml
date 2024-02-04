@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="ExtraText">
+
+    <!-- Título "Lista de pacientes" -->
+    <TextView
+        android:id="@android:id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E0E0E0"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="Lista de pacientes"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <!-- Nombre y Apellido concatenados con un espacio -->
+    <TextView
+        android:id="@android:id/text1"
+        style="@style/NegritaTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <!-- Población y Provincia -->
+    <TextView
+        android:id="@+id/poblacionProvinciaTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <!-- Temperatura -->
+    <TextView
+        android:id="@+id/temperaturaTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="16dp"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textSize="18sp" />
+
+</LinearLayout>

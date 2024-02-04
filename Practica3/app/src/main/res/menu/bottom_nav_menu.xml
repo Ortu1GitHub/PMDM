@@ -1,0 +1,19 @@
+<!-- Agrega el siguiente código en tu archivo bottom_navigation_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_medicion"
+        android:icon="@drawable/ic_temperatura"
+        android:title="Medicion" />
+    <item
+        android:id="@+id/menu_configuracion"
+        android:icon="@drawable/ic_configuracion"
+        android:title="Configuración" />
+    <item
+        android:id="@+id/menu_conversor"
+        android:icon="@drawable/ic_conversor"
+        android:title="Conversor" />
+    <item
+        android:id="@+id/menu_cerrar"
+        android:icon="@drawable/ic_cerrar_sesion"
+        android:title="Cerrar sesion" />
+</menu>
