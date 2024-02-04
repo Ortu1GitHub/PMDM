@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -43,6 +45,21 @@ public class Menu extends AppCompatActivity {
 
         //Adapter is set to listview
         lvPatientData.setAdapter(adapter);
+
+        // Set item click listener to open Map activity
+        lvPatientData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the clicked patient
+                Patient selectedPatient = patientList.get(position);
+
+                // Open Mapa activity, passing data if needed
+                Intent intent = new Intent(Menu.this, Mapa.class);
+                // Pass city to Map activity
+                intent.putExtra("city", selectedPatient.getCity());
+                startActivity(intent);
+            }
+        });
 
         //Reference to bottomNavigation is obtained
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
