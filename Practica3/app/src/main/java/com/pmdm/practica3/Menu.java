@@ -3,6 +3,7 @@ package com.pmdm.practica3;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -27,7 +29,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.sql.Types.NULL;
 
 public class Menu extends AppCompatActivity {
     List<Patient> patientList = new ArrayList<Patient>();
@@ -168,6 +174,14 @@ public class Menu extends AppCompatActivity {
                         Intent j = new Intent(Menu.this, FormularioMedicion.class);
                         startActivity(j);
                         return true;
+                    } else if (item.getItemId() == R.id.menu_mapa) {
+                        Intent m = new Intent(Menu.this, Mapa.class);
+                        m.putExtra("city", NULL);
+                        ArrayList<String> listaCiudades;
+                        listaCiudades = getCities(patientList);
+                        m.putExtra("lista_direcciones", listaCiudades);
+                        startActivity(m);
+                        return true;
                     } else if (item.getItemId() == R.id.menu_cerrar) {
                         Intent l = new Intent(Menu.this, LoginActivity.class);
                         startActivity(l);
@@ -177,4 +191,17 @@ public class Menu extends AppCompatActivity {
                     return false;
                 }
             };
+
+    public static ArrayList<String> getCities(List<Patient> patientList) {
+        ArrayList<String> cities = new ArrayList<>();
+
+        for (Patient patient : patientList) {
+            String city = patient.getCity();
+            if (city != null) {
+                cities.add(city);
+            }
+        }
+
+        return cities;
+    }
 }

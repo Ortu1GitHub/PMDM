@@ -1,15 +1,11 @@
 package com.pmdm.practica3;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,14 +15,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap myClientMap;
     private MapView mapView;
 
+    private ArrayList<String> listaCiudades;
     private String city;
 
     @Override
@@ -39,31 +39,62 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        // Se recupera la dirección y provincia pasadas en el intent
+        // Se recupera la ciudad pasada en el intent
         city = getIntent().getExtras().getString("city");
+        //Si es null se trata de un al de ciudades, si no es una sola ciudad
+        if (city != NULL) {
+            listaCiudades = getIntent().getStringArrayListExtra("lista_direcciones");
+        }
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
-        List<Address> addressList = null;
+        myClientMap = googleMap;
 
         if (city != null) {
-            Geocoder geocoder = new Geocoder(Mapa.this);
+            // Mostrar ubicación de la ciudad única
+            showCityLocation(city);
+        } else if (listaCiudades != null) {
+            // Mostrar ubicaciones de todas las ciudades en la lista
+            showCitiesLocations();
+        }
+    }
 
+    private void showCityLocation(String cityName) {
+        List<Address> addressList = null;
+
+        Geocoder geocoder = new Geocoder(Mapa.this, Locale.getDefault());
+
+        try {
+            addressList = geocoder.getFromLocationName(cityName, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (addressList != null && !addressList.isEmpty()) {
+            Address address = addressList.get(0);
+            LatLng cityLocation = new LatLng(address.getLatitude(), address.getLongitude());
+            myClientMap.addMarker(new MarkerOptions().position(cityLocation).title(cityName));
+            myClientMap.moveCamera(CameraUpdateFactory.newLatLng(cityLocation));
+            myClientMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cityLocation, 10));
+        }
+    }
+
+    private void showCitiesLocations() {
+        Geocoder geocoder = new Geocoder(Mapa.this, Locale.getDefault());
+
+        for (String cityName : listaCiudades) {
             try {
-                addressList = geocoder.getFromLocationName(city, 1);
+                List<Address> addressList = geocoder.getFromLocationName(cityName, 1);
+                if (addressList != null && !addressList.isEmpty()) {
+                    Address address = addressList.get(0);
+                    LatLng cityLocation = new LatLng(address.getLatitude(), address.getLongitude());
+                    myClientMap.addMarker(new MarkerOptions().position(cityLocation).title(cityName));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-        Address address = addressList.get(0);
-        myClientMap = googleMap;
-        LatLng cityLocations = new LatLng(address.getLatitude(), address.getLongitude());
-        myClientMap.addMarker(new MarkerOptions().position(cityLocations).title(city));
-        myClientMap.moveCamera(CameraUpdateFactory.newLatLng(cityLocations));
-        myClientMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cityLocations, 10));
     }
 
     @Override
